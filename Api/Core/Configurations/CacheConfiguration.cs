@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Core.Configurations
+﻿namespace Core.Configurations
 {
     public class CacheConfiguration
     {
