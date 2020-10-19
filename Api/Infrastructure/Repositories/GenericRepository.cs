@@ -61,7 +61,7 @@ namespace Infrastructure.Repositories
             BackgroundJob.Enqueue(() => RefreshCache());
         }
 
-        private async Task RefreshCache()
+        public async Task RefreshCache()
         {
             _cacheService(cacheTech).Remove(cacheKey);
             var cachedList = await _dbContext.Set<T>().ToListAsync();
