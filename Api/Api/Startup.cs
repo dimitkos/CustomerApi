@@ -1,6 +1,7 @@
 using Core.Configurations;
 using Core.Enum;
 using Core.Interfaces;
+using Hangfire;
 using Infrastructure.Context;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Builder;
@@ -15,7 +16,7 @@ namespace Api
 {
     public class Startup
     {
-        private  IConfiguration _configuration { get; }
+        private IConfiguration _configuration { get; }
 
         public Startup(IConfiguration configuration)
         {
@@ -49,6 +50,9 @@ namespace Api
                        _configuration.GetConnectionString("DefaultConnection"),
                        b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
 
+            services.AddHangfire(x => x.UseSqlServerStorage(_configuration.GetConnectionString("DefaultConnection")));
+            services.AddHangfireServer();
+
             services.AddControllers();
         }
 
@@ -63,6 +67,8 @@ namespace Api
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseHangfireDashboard("/jobs");
 
             app.UseEndpoints(endpoints =>
             {
