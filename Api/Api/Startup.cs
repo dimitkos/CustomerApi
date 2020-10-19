@@ -3,6 +3,7 @@ using Core.Enum;
 using Core.Interfaces;
 using Hangfire;
 using Infrastructure.Context;
+using Infrastructure.Repositories;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -45,6 +46,9 @@ namespace Api
                         return serviceProvider.GetService<MemoryCacheService>();
                 }
             });
+
+            services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            services.AddTransient<ICustomerRepository, CustomerRepository>();
 
             services.AddDbContext<ApplicationDbContext>(options =>
                    options.UseSqlServer(
